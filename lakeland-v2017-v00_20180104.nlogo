@@ -54,10 +54,9 @@ turtles-own [
   desFishingtime           ; Desired fraction of time fishing
   LNSmin_i                 ; Individual level of LNSmin when there is variability
   Umax_i                   ; Individual level of Umax when there is variability
-
-  r
-  s
-
+  r  ;recall
+  s  ; information 
+  Gamma_i                  ; Individuals preference for income v. leisure time
   ]
 patches-own []
 
@@ -92,6 +91,10 @@ to setup
       set LNSmin_i LNSmin
       set Umax_i Umax
     ]
+    ifelse variability_gamma [
+      set Gamma_i  gamma * (1 - level_of_variability_thresholds) + gamma * level_of_variability_thresholds * random-float 1][
+      set Gamma_i gamma
+    ]
     set agt1 0 set agt1ft 0 set agt1mt 0 set agt1inc 0
     set agt2 0 set agt2ft 0 set agt2mt 0 set agt2inc 0
     set agt3 0 set agt3ft 0 set agt3mt 0 set agt3inc 0
@@ -112,7 +115,7 @@ to setup
     if (FishingTime * FishSkill * Fish_pop) < FishDemand [
          set expincome expincome - WorldMFishPrice * (FishDemand - (FishingTime * FishSkill * Fish_pop))]
     ifelse (expincome > 0) [
-       set LNS (expincome ^ gamma) * ((1 - FishingTime - MiningTime) ^ (1 - gamma))
+       set LNS (expincome ^ Gamma_i) * ((1 - FishingTime - MiningTime) ^ (1 - Gamma_i))
     ][set LNS 0]
 
     set expLNS LNS
@@ -148,10 +151,10 @@ to go
   ifelse inequalityaversion [
       let perceivedincome Income - beta * ABS (Income - mean [Income] of other turtles)
       ifelse perceivedincome > 0 [
-         set LNS (perceivedincome ^ gamma ) * ((1 - Fishingtime - Miningtime) ^ (1 - gamma))][set LNS 0]
+         set LNS (perceivedincome ^ Gamma_i ) * ((1 - Fishingtime - Miningtime) ^ (1 - Gamma_i))][set LNS 0]
     ][
     ifelse Income > 0 [
-       set LNS (Income ^ gamma ) * ((1 - Fishingtime - Miningtime) ^ (1 - gamma))][set LNS 0]
+       set LNS (Income ^ Gamma_i ) * ((1 - Fishingtime - Miningtime) ^ (1 - Gamma_i))][set LNS 0]
     ]
    set avguncertainty 0
    if ExpLNS > 0 [
@@ -282,7 +285,7 @@ to decisionmaking
 
               ifelse (expincome > 0) [
 
-              set expLNS (expincome ^ gamma) * ((1 - FT - MT) ^ (1 - gamma))
+              set expLNS (expincome ^ Gamma_i) * ((1 - FT - MT) ^ (1 - Gamma_i))
               ][set expLNS 0]
              if expLNS >= maxLNS [
                ifelse expLNS = maxLNS [
@@ -326,7 +329,7 @@ to decisionmaking
               set expincome expincome - beta * ABS (expincome - mean [Income] of other turtles)
             ]
           ifelse (expincome > 0) [
-              set expLNS1 (expincome ^ gamma) * ((1 - FishingTime - MiningTime) ^ (1 - gamma))
+              set expLNS1 (expincome ^ Gamma_i) * ((1 - FishingTime - MiningTime) ^ (1 - Gamma_i))
               ][set expLNS1 0]
 
        ; expected utility current strategy
@@ -340,7 +343,7 @@ to decisionmaking
               set expincome expincome - beta * ABS (expincome - mean [Income] of other turtles)
             ]
           ifelse (expincome > 0) [
-              set expLNS2 (expincome ^ gamma) * ((1 - desFishingTime - desMiningTime) ^ (1 - gamma))
+              set expLNS2 (expincome ^ Gamma_i) * ((1 - desFishingTime - desMiningTime) ^ (1 - Gamma_i))
               ][set expLNS2 0]
         ifelse expLNS1 >= expLNS2 [set desFishingTime FishingTime set desMiningTime MiningTime set expLNS expLNS1][set expLNS expLNS2]
      ]
@@ -454,6 +457,7 @@ to flock
 
 
 end
+
 to information
    ask turtles [
     ;setxy xcor + paso R * 100
@@ -463,12 +467,13 @@ to information
    ; pd
     ]
 end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
-337
-73
-560
-297
+355
+10
+578
+234
 -1
 -1
 2.13433
@@ -681,10 +686,10 @@ PENS
 "Gold" 1.0 0 -14737633 true "" "plot Gold_Resource"
 
 SLIDER
-132
-207
-304
-240
+147
+285
+319
+318
 removalrate
 removalrate
 0
@@ -871,10 +876,10 @@ inequalityaversion
 -1000
 
 SLIDER
-147
-250
-303
-283
+174
+366
+330
+399
 beta
 beta
 0
@@ -896,10 +901,10 @@ If variability thresholds is on, LNSmin and Umax sliders cannot be used.
 1
 
 TEXTBOX
-157
-290
-307
-318
+169
+331
+319
+359
 Is there variability of fish catch among agents/
 11
 0.0
@@ -934,6 +939,7 @@ Vicinity_distance
 1
 NIL
 HORIZONTAL
+
 
 PLOT
 252
@@ -987,6 +993,33 @@ NIL
 NIL
 NIL
 1
+
+SWITCH
+138
+206
+307
+239
+variability_gamma
+variability_gamma
+1
+1
+-1000
+
+SLIDER
+154
+249
+377
+282
+level_of_variability_gamma
+level_of_variability_gamma
+0
+1
+1.0
+0.01
+1
+NIL
+HORIZONTAL
+
 
 @#$#@#$#@
 This is a Netlogo implementation of a simplified version of the model described in Jager W., M.A. Janssen, H.J.M. De Vries, J. De Greef and C.A.J. Vlek (2000) Behaviour in commons dilemmas: Homo Economicus and Homo Psychologicus in an ecological-economic model, Ecological Economics 35(3): 357-380
