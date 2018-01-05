@@ -28,6 +28,7 @@ globals [
   agt7 agt7ft agt7mt agt7inc
   agt8 agt8ft agt8mt agt8inc
   agt9 agt9ft agt9mt agt9inc
+  dts
   ]
 
 turtles-own [
@@ -53,11 +54,17 @@ turtles-own [
   desFishingtime           ; Desired fraction of time fishing
   LNSmin_i                 ; Individual level of LNSmin when there is variability
   Umax_i                   ; Individual level of Umax when there is variability
+
+  r
+  s
+
   ]
 patches-own []
 
 to setup
   clear-all
+
+  set dts 0.1
   set CumNumOpt 0
   set CumNumRep 0
   set CumNumInq 0
@@ -117,6 +124,7 @@ to setup
     set size 5
     set color white
   ]
+  ask turtles [set S 3]
   reset-ticks
 end
 
@@ -126,6 +134,7 @@ to go
   decisionmaking
 
   fishdynamics
+  information
   set agt1 0 set agt1ft 0 set agt1mt 0 set agt1inc 0
   set agt2 0 set agt2ft 0 set agt2mt 0 set agt2inc 0
   set agt3 0 set agt3ft 0 set agt3mt 0 set agt3inc 0
@@ -445,7 +454,15 @@ to flock
 
 
 end
-
+to information
+   ask turtles [
+    ;setxy xcor + paso R * 100
+    ;set S 1
+    set R R - (dts * R / S  )
+;    if R > 75
+   ; pd
+    ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 337
@@ -918,6 +935,59 @@ Vicinity_distance
 NIL
 HORIZONTAL
 
+PLOT
+252
+357
+452
+507
+Information
+NIL
+NIL
+0.0
+0.0
+0.0
+0.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -14070903 true "" "plot [r] of  turtle 54"
+"pen-1" 1.0 0 -2674135 true "" "plot [r] of  turtle 55 "
+
+BUTTON
+70
+455
+164
+488
+information
+ask turtle 54 [set r 7 set S s + 2]\nask turtle 55 [set r 7 set S s + 2]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+80
+407
+143
+440
+inf55
+ask turtle 55 [set r 7 set S s + 2]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 @#$#@#$#@
 This is a Netlogo implementation of a simplified version of the model described in Jager W., M.A. Janssen, H.J.M. De Vries, J. De Greef and C.A.J. Vlek (2000) Behaviour in commons dilemmas: Homo Economicus and Homo Psychologicus in an ecological-economic model, Ecological Economics 35(3): 357-380
 
@@ -1234,7 +1304,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.1
+NetLogo 6.0.2
 @#$#@#$#@
 setup
 set grass? true
