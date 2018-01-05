@@ -215,7 +215,7 @@ to go
  ]
 
 update_color_and_size
-flock
+
 
   tick
 
@@ -439,11 +439,6 @@ ask turtles
     set size Miningtime * 5
     ]
   ]
-end
-
-to flock
-
-
 end
 
 @#$#@#$#@
