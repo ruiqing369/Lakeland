@@ -220,6 +220,7 @@ to go
  ]
 
 update_color_and_size
+flock
 
   tick
 
@@ -445,6 +446,10 @@ ask turtles
   ]
 end
 
+to flock
+
+
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 355

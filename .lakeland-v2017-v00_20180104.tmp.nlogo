@@ -110,7 +110,7 @@ to setup
     if (FishingTime * FishSkill * Fish_pop) < FishDemand [
          set expincome expincome - WorldMFishPrice * (FishDemand - (FishingTime * FishSkill * Fish_pop))]
     ifelse (expincome > 0) [
-       set LNS (expincome ^ amma) * ((1 - FishingTime - MiningTime) ^ (1 - gamma))
+       set LNS (expincome ^ Gamma_i) * ((1 - FishingTime - MiningTime) ^ (1 - Gamma_i))
     ][set LNS 0]
 
     set expLNS LNS
@@ -144,10 +144,10 @@ to go
   ifelse inequalityaversion [
       let perceivedincome Income - beta * ABS (Income - mean [Income] of other turtles)
       ifelse perceivedincome > 0 [
-         set LNS (perceivedincome ^ gamma ) * ((1 - Fishingtime - Miningtime) ^ (1 - gamma))][set LNS 0]
+         set LNS (perceivedincome ^ Gamma_i ) * ((1 - Fishingtime - Miningtime) ^ (1 - Gamma_i))][set LNS 0]
     ][
     ifelse Income > 0 [
-       set LNS (Income ^ gamma ) * ((1 - Fishingtime - Miningtime) ^ (1 - gamma))][set LNS 0]
+       set LNS (Income ^ Gamma_i ) * ((1 - Fishingtime - Miningtime) ^ (1 - Gamma_i))][set LNS 0]
     ]
    set avguncertainty 0
    if ExpLNS > 0 [
@@ -220,6 +220,7 @@ to go
  ]
 
 update_color_and_size
+flock
 
   tick
 
@@ -277,7 +278,7 @@ to decisionmaking
 
               ifelse (expincome > 0) [
 
-              set expLNS (expincome ^ gamma) * ((1 - FT - MT) ^ (1 - gamma))
+              set expLNS (expincome ^ Gamma_i) * ((1 - FT - MT) ^ (1 - Gamma_i))
               ][set expLNS 0]
              if expLNS >= maxLNS [
                ifelse expLNS = maxLNS [
@@ -321,7 +322,7 @@ to decisionmaking
               set expincome expincome - beta * ABS (expincome - mean [Income] of other turtles)
             ]
           ifelse (expincome > 0) [
-              set expLNS1 (expincome ^ gamma) * ((1 - FishingTime - MiningTime) ^ (1 - gamma))
+              set expLNS1 (expincome ^ Gamma_i) * ((1 - FishingTime - MiningTime) ^ (1 - Gamma_i))
               ][set expLNS1 0]
 
        ; expected utility current strategy
@@ -335,7 +336,7 @@ to decisionmaking
               set expincome expincome - beta * ABS (expincome - mean [Income] of other turtles)
             ]
           ifelse (expincome > 0) [
-              set expLNS2 (expincome ^ gamma) * ((1 - desFishingTime - desMiningTime) ^ (1 - gamma))
+              set expLNS2 (expincome ^ Gamma_i) * ((1 - desFishingTime - desMiningTime) ^ (1 - Gamma_i))
               ][set expLNS2 0]
         ifelse expLNS1 >= expLNS2 [set desFishingTime FishingTime set desMiningTime MiningTime set expLNS expLNS1][set expLNS expLNS2]
      ]
@@ -445,6 +446,13 @@ ask turtles
   ]
 end
 
+
+to flock
+
+
+end
+
+>>>>>>> 4255fdcebcac90bc04f27cfcb5ed9891cfa5fda0
 @#$#@#$#@
 GRAPHICS-WINDOW
 355
