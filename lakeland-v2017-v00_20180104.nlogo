@@ -461,9 +461,7 @@ to flock
    [find-flockmates
      if any? flockmates
     [ find-nearest-neighbor
-      align
-      cohere
-      ifelse distance nearest-neighbor < minimum-separation
+       ifelse distance nearest-neighbor < minimum-separation
         [ separate  ]
         [ align
           cohere  ]
