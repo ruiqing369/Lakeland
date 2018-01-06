@@ -451,6 +451,7 @@ to flock
 
 
 end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 355
@@ -922,6 +923,59 @@ Vicinity_distance
 1
 NIL
 HORIZONTAL
+
+PLOT
+252
+357
+452
+507
+Information
+NIL
+NIL
+0.0
+0.0
+0.0
+0.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -14070903 true "" "plot [r] of  turtle 54"
+"pen-1" 1.0 0 -2674135 true "" "plot [r] of  turtle 55 "
+
+BUTTON
+70
+455
+164
+488
+information
+ask turtle 54 [set r 7 set S s + 2]\nask turtle 55 [set r 7 set S s + 2]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+80
+407
+143
+440
+inf55
+ask turtle 55 [set r 7 set S s + 2]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 SWITCH
 138
