@@ -55,7 +55,7 @@ turtles-own [
   LNSmin_i                 ; Individual level of LNSmin when there is variability
   Umax_i                   ; Individual level of Umax when there is variability
   r  ;recall
-  s  ; information 
+  s  ; information
   Gamma_i                  ; Individuals preference for income v. leisure time
   ]
 patches-own []
@@ -467,7 +467,6 @@ to information
    ; pd
     ]
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 355
@@ -483,8 +482,8 @@ GRAPHICS-WINDOW
 1
 1
 0
-0
-0
+1
+1
 1
 -50
 50
@@ -539,7 +538,7 @@ num_agents
 num_agents
 0
 200
-200.0
+100.0
 1
 1
 NIL
@@ -746,7 +745,7 @@ SWITCH
 98
 variability_skills
 variability_skills
-0
+1
 1
 -1000
 
@@ -759,7 +758,7 @@ gamma
 gamma
 0
 1
-0.5
+0.75
 0.01
 1
 NIL
@@ -832,7 +831,7 @@ level_of_variability_skills
 level_of_variability_skills
 0
 1
-1.0
+0.0
 0.01
 1
 NIL
@@ -845,7 +844,7 @@ SWITCH
 169
 variability_thresholds
 variability_thresholds
-0
+1
 1
 -1000
 
@@ -871,7 +870,7 @@ SWITCH
 284
 inequalityaversion
 inequalityaversion
-0
+1
 1
 -1000
 
@@ -884,7 +883,7 @@ beta
 beta
 0
 1
-1.0
+0.0
 0.01
 1
 NIL
@@ -919,7 +918,7 @@ Steps
 Steps
 0
 10
-1.0
+10.0
 1
 1
 NIL
@@ -934,18 +933,17 @@ Vicinity_distance
 Vicinity_distance
 0
 10
-1.0
+10.0
 1
 1
 NIL
 HORIZONTAL
 
-
 PLOT
-252
-357
+348
+302
+548
 452
-507
 Information
 NIL
 NIL
@@ -1014,12 +1012,11 @@ level_of_variability_gamma
 level_of_variability_gamma
 0
 1
-1.0
+0.0
 0.01
 1
 NIL
 HORIZONTAL
-
 
 @#$#@#$#@
 This is a Netlogo implementation of a simplified version of the model described in Jager W., M.A. Janssen, H.J.M. De Vries, J. De Greef and C.A.J. Vlek (2000) Behaviour in commons dilemmas: Homo Economicus and Homo Psychologicus in an ecological-economic model, Ecological Economics 35(3): 357-380
@@ -1337,7 +1334,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.2
+NetLogo 6.0.1
 @#$#@#$#@
 setup
 set grass? true
@@ -1429,6 +1426,425 @@ repeat 75 [ go ]
     <enumeratedValueSet variable="beta">
       <value value="0"/>
       <value value="1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="gamma variability" repetitions="50" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="500"/>
+    <metric>Fish_pop</metric>
+    <metric>Gold_Resource</metric>
+    <metric>mean [Finance] of turtles</metric>
+    <metric>mean [LNS] of turtles</metric>
+    <metric>Pollution</metric>
+    <metric>Gini</metric>
+    <metric>CumNumOpt / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumRep / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumInq / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumIm / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>agt1</metric>
+    <metric>agt2</metric>
+    <metric>agt3</metric>
+    <metric>agt4</metric>
+    <metric>agt5</metric>
+    <metric>agt6</metric>
+    <metric>agt7</metric>
+    <metric>agt8</metric>
+    <metric>agt9</metric>
+    <metric>agt1ft</metric>
+    <metric>agt2ft</metric>
+    <metric>agt3ft</metric>
+    <metric>agt4ft</metric>
+    <metric>agt5ft</metric>
+    <metric>agt6ft</metric>
+    <metric>agt7ft</metric>
+    <metric>agt8ft</metric>
+    <metric>agt9ft</metric>
+    <metric>agt1mt</metric>
+    <metric>agt2mt</metric>
+    <metric>agt3mt</metric>
+    <metric>agt4mt</metric>
+    <metric>agt5mt</metric>
+    <metric>agt6mt</metric>
+    <metric>agt7mt</metric>
+    <metric>agt8mt</metric>
+    <metric>agt9mt</metric>
+    <metric>agt1inc</metric>
+    <metric>agt2inc</metric>
+    <metric>agt3inc</metric>
+    <metric>agt4inc</metric>
+    <metric>agt5inc</metric>
+    <metric>agt6inc</metric>
+    <metric>agt7inc</metric>
+    <metric>agt8inc</metric>
+    <metric>agt9inc</metric>
+    <enumeratedValueSet variable="variability_skills">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="variability_thresholds">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="variability_gamma">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="removalrate">
+      <value value="0.01"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num_agents">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LNSmin">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Umax">
+      <value value="0.1"/>
+      <value value="0.2"/>
+      <value value="0.3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gamma">
+      <value value="0.25"/>
+      <value value="0.5"/>
+      <value value="0.75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_skills">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_thresholds">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_gamma">
+      <value value="0"/>
+      <value value="0.5"/>
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Stochasticity">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="inequalityaversion">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="beta">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="steps">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="vicinity_distance">
+      <value value="0"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="baseline" repetitions="50" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="500"/>
+    <metric>Fish_pop</metric>
+    <metric>Gold_Resource</metric>
+    <metric>mean [Finance] of turtles</metric>
+    <metric>mean [LNS] of turtles</metric>
+    <metric>Pollution</metric>
+    <metric>Gini</metric>
+    <metric>CumNumOpt / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumRep / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumInq / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumIm / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>agt1</metric>
+    <metric>agt2</metric>
+    <metric>agt3</metric>
+    <metric>agt4</metric>
+    <metric>agt5</metric>
+    <metric>agt6</metric>
+    <metric>agt7</metric>
+    <metric>agt8</metric>
+    <metric>agt9</metric>
+    <metric>agt1ft</metric>
+    <metric>agt2ft</metric>
+    <metric>agt3ft</metric>
+    <metric>agt4ft</metric>
+    <metric>agt5ft</metric>
+    <metric>agt6ft</metric>
+    <metric>agt7ft</metric>
+    <metric>agt8ft</metric>
+    <metric>agt9ft</metric>
+    <metric>agt1mt</metric>
+    <metric>agt2mt</metric>
+    <metric>agt3mt</metric>
+    <metric>agt4mt</metric>
+    <metric>agt5mt</metric>
+    <metric>agt6mt</metric>
+    <metric>agt7mt</metric>
+    <metric>agt8mt</metric>
+    <metric>agt9mt</metric>
+    <metric>agt1inc</metric>
+    <metric>agt2inc</metric>
+    <metric>agt3inc</metric>
+    <metric>agt4inc</metric>
+    <metric>agt5inc</metric>
+    <metric>agt6inc</metric>
+    <metric>agt7inc</metric>
+    <metric>agt8inc</metric>
+    <metric>agt9inc</metric>
+    <enumeratedValueSet variable="variability_skills">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="variability_thresholds">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="variability_gamma">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="removalrate">
+      <value value="0.01"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num_agents">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LNSmin">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Umax">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gamma">
+      <value value="0.25"/>
+      <value value="0.5"/>
+      <value value="0.75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_skills">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_thresholds">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_gamma">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Stochasticity">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="inequalityaversion">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="beta">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="steps">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="vicinity_distance">
+      <value value="0"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="radius" repetitions="50" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="500"/>
+    <metric>Fish_pop</metric>
+    <metric>Gold_Resource</metric>
+    <metric>mean [Finance] of turtles</metric>
+    <metric>mean [LNS] of turtles</metric>
+    <metric>Pollution</metric>
+    <metric>Gini</metric>
+    <metric>CumNumOpt / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumRep / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumInq / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumIm / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>agt1</metric>
+    <metric>agt2</metric>
+    <metric>agt3</metric>
+    <metric>agt4</metric>
+    <metric>agt5</metric>
+    <metric>agt6</metric>
+    <metric>agt7</metric>
+    <metric>agt8</metric>
+    <metric>agt9</metric>
+    <metric>agt1ft</metric>
+    <metric>agt2ft</metric>
+    <metric>agt3ft</metric>
+    <metric>agt4ft</metric>
+    <metric>agt5ft</metric>
+    <metric>agt6ft</metric>
+    <metric>agt7ft</metric>
+    <metric>agt8ft</metric>
+    <metric>agt9ft</metric>
+    <metric>agt1mt</metric>
+    <metric>agt2mt</metric>
+    <metric>agt3mt</metric>
+    <metric>agt4mt</metric>
+    <metric>agt5mt</metric>
+    <metric>agt6mt</metric>
+    <metric>agt7mt</metric>
+    <metric>agt8mt</metric>
+    <metric>agt9mt</metric>
+    <metric>agt1inc</metric>
+    <metric>agt2inc</metric>
+    <metric>agt3inc</metric>
+    <metric>agt4inc</metric>
+    <metric>agt5inc</metric>
+    <metric>agt6inc</metric>
+    <metric>agt7inc</metric>
+    <metric>agt8inc</metric>
+    <metric>agt9inc</metric>
+    <enumeratedValueSet variable="variability_skills">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="variability_thresholds">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="variability_gamma">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="removalrate">
+      <value value="0.01"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num_agents">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LNSmin">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Umax">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gamma">
+      <value value="0.25"/>
+      <value value="0.5"/>
+      <value value="0.75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_skills">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_thresholds">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_gamma">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Stochasticity">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="inequalityaversion">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="beta">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="steps">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="vicinity_distance">
+      <value value="0"/>
+      <value value="2"/>
+      <value value="4"/>
+      <value value="6"/>
+      <value value="8"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="radius plus steps" repetitions="50" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="500"/>
+    <metric>Fish_pop</metric>
+    <metric>Gold_Resource</metric>
+    <metric>mean [Finance] of turtles</metric>
+    <metric>mean [LNS] of turtles</metric>
+    <metric>Pollution</metric>
+    <metric>Gini</metric>
+    <metric>CumNumOpt / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumRep / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumInq / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>CumNumIm / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
+    <metric>agt1</metric>
+    <metric>agt2</metric>
+    <metric>agt3</metric>
+    <metric>agt4</metric>
+    <metric>agt5</metric>
+    <metric>agt6</metric>
+    <metric>agt7</metric>
+    <metric>agt8</metric>
+    <metric>agt9</metric>
+    <metric>agt1ft</metric>
+    <metric>agt2ft</metric>
+    <metric>agt3ft</metric>
+    <metric>agt4ft</metric>
+    <metric>agt5ft</metric>
+    <metric>agt6ft</metric>
+    <metric>agt7ft</metric>
+    <metric>agt8ft</metric>
+    <metric>agt9ft</metric>
+    <metric>agt1mt</metric>
+    <metric>agt2mt</metric>
+    <metric>agt3mt</metric>
+    <metric>agt4mt</metric>
+    <metric>agt5mt</metric>
+    <metric>agt6mt</metric>
+    <metric>agt7mt</metric>
+    <metric>agt8mt</metric>
+    <metric>agt9mt</metric>
+    <metric>agt1inc</metric>
+    <metric>agt2inc</metric>
+    <metric>agt3inc</metric>
+    <metric>agt4inc</metric>
+    <metric>agt5inc</metric>
+    <metric>agt6inc</metric>
+    <metric>agt7inc</metric>
+    <metric>agt8inc</metric>
+    <metric>agt9inc</metric>
+    <enumeratedValueSet variable="variability_skills">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="variability_thresholds">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="variability_gamma">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="removalrate">
+      <value value="0.01"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num_agents">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="LNSmin">
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Umax">
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="gamma">
+      <value value="0.25"/>
+      <value value="0.5"/>
+      <value value="0.75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_skills">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_thresholds">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="level_of_variability_gamma">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Stochasticity">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="inequalityaversion">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="beta">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="steps">
+      <value value="0"/>
+      <value value="3"/>
+      <value value="7"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="vicinity_distance">
+      <value value="0"/>
+      <value value="3"/>
+      <value value="7"/>
+      <value value="10"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
