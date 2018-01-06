@@ -830,7 +830,7 @@ gamma
 gamma
 0
 1
-0.5
+0.75
 0.01
 1
 NIL
@@ -942,7 +942,7 @@ SWITCH
 274
 inequalityaversion
 inequalityaversion
-1
+0
 1
 -1000
 
@@ -990,7 +990,7 @@ Speed
 Speed
 0
 10
-7.0
+3.0
 1
 1
 NIL
@@ -1005,7 +1005,7 @@ Neighborhood_radius
 Neighborhood_radius
 0
 50
-30.0
+50.0
 1
 1
 NIL
@@ -1424,7 +1424,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.1
+NetLogo 6.0.2
 @#$#@#$#@
 setup
 set grass? true
@@ -1432,7 +1432,7 @@ repeat 75 [ go ]
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="experiment" repetitions="100" runMetricsEveryStep="false">
+  <experiment name="experiment_3" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="500"/>
@@ -1482,6 +1482,7 @@ repeat 75 [ go ]
     <metric>agt7inc</metric>
     <metric>agt8inc</metric>
     <metric>agt9inc</metric>
+    <metric>CumNumInq / (CumNumOpt + CumNumRep + CumNumInq + CumNumIm)</metric>
     <enumeratedValueSet variable="variability_skills">
       <value value="true"/>
     </enumeratedValueSet>
@@ -1501,8 +1502,7 @@ repeat 75 [ go ]
       <value value="0.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="level_of_variability_skills">
-      <value value="0"/>
-      <value value="1"/>
+      <value value="0.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="level_of_variability_thresholds">
       <value value="0"/>
@@ -1516,6 +1516,15 @@ repeat 75 [ go ]
     <enumeratedValueSet variable="beta">
       <value value="0"/>
       <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="flocking">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="speed">
+      <value value="0"/>
+      <value value="3"/>
+      <value value="7"/>
+      <value value="10"/>
     </enumeratedValueSet>
   </experiment>
   <experiment name="gamma variability" repetitions="50" runMetricsEveryStep="true">
@@ -1623,7 +1632,7 @@ repeat 75 [ go ]
       <value value="0"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="baseline" repetitions="50" runMetricsEveryStep="true">
+  <experiment name="baseline_test" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="500"/>
@@ -1674,7 +1683,7 @@ repeat 75 [ go ]
     <metric>agt8inc</metric>
     <metric>agt9inc</metric>
     <enumeratedValueSet variable="variability_skills">
-      <value value="false"/>
+      <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="variability_thresholds">
       <value value="false"/>
@@ -1695,12 +1704,10 @@ repeat 75 [ go ]
       <value value="0.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="gamma">
-      <value value="0.25"/>
       <value value="0.5"/>
-      <value value="0.75"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="level_of_variability_skills">
-      <value value="0"/>
+      <value value="0.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="level_of_variability_thresholds">
       <value value="0"/>
@@ -1720,8 +1727,20 @@ repeat 75 [ go ]
     <enumeratedValueSet variable="steps">
       <value value="0"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="vicinity_distance">
-      <value value="0"/>
+    <enumeratedValueSet variable="neighborhood_radius">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="minimum-separation">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-separate-turn">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-align-turn">
+      <value value="6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-cohere-turn">
+      <value value="5.75"/>
     </enumeratedValueSet>
   </experiment>
   <experiment name="radius" repetitions="50" runMetricsEveryStep="true">
@@ -1935,89 +1954,6 @@ repeat 75 [ go ]
       <value value="3"/>
       <value value="7"/>
       <value value="10"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="experiment 2" repetitions="10" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="500"/>
-    <metric>Fish_pop</metric>
-    <metric>Gold_Resource</metric>
-    <metric>mean [Finance] of turtles</metric>
-    <metric>mean [LNS] of turtles</metric>
-    <metric>Pollution</metric>
-    <metric>Gini</metric>
-    <enumeratedValueSet variable="level_of_variability_gamma">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="variability_gamma">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="gamma">
-      <value value="0.5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="flocking">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="removalrate">
-      <value value="0.01"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="max-separate-turn">
-      <value value="1.5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="beta">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Stochasticity">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="variability_thresholds">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Neighborhood_radius">
-      <value value="0"/>
-      <value value="10"/>
-      <value value="30"/>
-      <value value="50"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Pollution_active">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="num_agents">
-      <value value="100"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="inequalityaversion">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="max-cohere-turn">
-      <value value="5.75"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="variability_skills">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="minimum-separation">
-      <value value="1"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="level_of_variability_thresholds">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="level_of_variability_skills">
-      <value value="0.5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Speed">
-      <value value="0"/>
-      <value value="3"/>
-      <value value="7"/>
-      <value value="10"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="max-align-turn">
-      <value value="6"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Umax">
-      <value value="0.2"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="LNSmin">
-      <value value="0.1"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
