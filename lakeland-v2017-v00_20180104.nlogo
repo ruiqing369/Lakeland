@@ -28,7 +28,6 @@ globals [
   agt7 agt7ft agt7mt agt7inc
   agt8 agt8ft agt8mt agt8inc
   agt9 agt9ft agt9mt agt9inc
-  dts
   ]
 
 turtles-own [
@@ -54,16 +53,13 @@ turtles-own [
   desFishingtime           ; Desired fraction of time fishing
   LNSmin_i                 ; Individual level of LNSmin when there is variability
   Umax_i                   ; Individual level of Umax when there is variability
-  r  ;recall
-  s  ; information
-  Gamma_i                  ; Individuals preference for income v. leisure time
+ Gamma_i                  ; Individuals preference for income v. leisure time
   ]
 patches-own []
 
 to setup
   clear-all
 
-  set dts 0.1
   set CumNumOpt 0
   set CumNumRep 0
   set CumNumInq 0
@@ -127,7 +123,6 @@ to setup
     set size 5
     set color white
   ]
-  ask turtles [set S 3]
   reset-ticks
 end
 
@@ -137,7 +132,6 @@ to go
   decisionmaking
 
   fishdynamics
-  information
   set agt1 0 set agt1ft 0 set agt1mt 0 set agt1inc 0
   set agt2 0 set agt2ft 0 set agt2mt 0 set agt2inc 0
   set agt3 0 set agt3ft 0 set agt3mt 0 set agt3inc 0
@@ -456,16 +450,6 @@ end
 to flock
 
 
-end
-
-to information
-   ask turtles [
-    ;setxy xcor + paso R * 100
-    ;set S 1
-    set R R - (dts * R / S  )
-;    if R > 75
-   ; pd
-    ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -875,10 +859,10 @@ inequalityaversion
 -1000
 
 SLIDER
-174
-366
-330
-399
+345
+359
+501
+392
 beta
 beta
 0
@@ -900,10 +884,10 @@ If variability thresholds is on, LNSmin and Umax sliders cannot be used.
 1
 
 TEXTBOX
-169
-331
-319
-359
+350
+398
+500
+426
 Is there variability of fish catch among agents/
 11
 0.0
@@ -927,70 +911,17 @@ HORIZONTAL
 SLIDER
 18
 364
-152
+209
 397
 Vicinity_distance
 Vicinity_distance
 0
-10
-10.0
+50
+50.0
 1
 1
 NIL
 HORIZONTAL
-
-PLOT
-348
-302
-548
-452
-Information
-NIL
-NIL
-0.0
-0.0
-0.0
-0.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -14070903 true "" "plot [r] of  turtle 54"
-"pen-1" 1.0 0 -2674135 true "" "plot [r] of  turtle 55 "
-
-BUTTON
-70
-455
-164
-488
-information
-ask turtle 54 [set r 7 set S s + 2]\nask turtle 55 [set r 7 set S s + 2]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-80
-407
-143
-440
-inf55
-ask turtle 55 [set r 7 set S s + 2]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
 
 SWITCH
 138
