@@ -54,6 +54,9 @@ turtles-own [
   LNSmin_i                 ; Individual level of LNSmin when there is variability
   Umax_i                   ; Individual level of Umax when there is variability
   Gamma_i                  ; Individuals preference for income v. leisure time
+  flockmates               ; agentset of nearby turtles
+  nearest-neighbor         ; closest one of our flockmates
+  career                   ; either mining or fishing
   ]
 patches-own []
 
@@ -121,15 +124,14 @@ to setup
     setxy random-xcor random-ycor
     set size 5
     set color white
+    set flockmates no-turtles
   ]
   reset-ticks
 end
 
 to go
   move
-
   decisionmaking
-
   fishdynamics
   set agt1 0 set agt1ft 0 set agt1mt 0 set agt1inc 0
   set agt2 0 set agt2ft 0 set agt2mt 0 set agt2inc 0
@@ -218,17 +220,16 @@ to go
     ]
     ]
  ]
-
+update_career
 update_color_and_size
-flock
-
-  tick
-
+if flocking
+  [flock]
+tick
 end
 
 to move
   ask turtles
-  [forward Steps]
+  [forward Speed]
 end
 
 
@@ -307,7 +308,7 @@ to decisionmaking
            set NumInq NumInq + 1
            let fs FishSkill
            let ms MineSkill
-           let peers turtles in-radius Vicinity_distance   ;; people only compare the people that are around them
+           let peers turtles in-radius Neighborhood_radius   ;; people only compare the people that are around them
            set desMiningtime mean [Miningtime] of peers with [abs(FishSkill - fs) <= 0.1 and abs(MineSkill - ms) <= 0.1]
            set desFishingtime mean [Fishingtime] of peers with [abs(FishSkill - fs) <= 0.1 and abs(MineSkill - ms) <= 0.1]
 
@@ -351,7 +352,7 @@ to decisionmaking
           set NumIm NumIm + 1
            let fs FishSkill
            let ms MineSkill
-           let peers turtles in-radius Vicinity_distance  ;; people only imitate the people around them
+           let peers turtles in-radius Neighborhood_radius  ;; people only imitate the people around them
            set desMiningtime mean [Miningtime] of peers with [abs(FishSkill - fs) <= 0.1 and abs(MineSkill - ms) <= 0.1]
            set desFishingtime mean [Fishingtime] of peers with [abs(FishSkill - fs) <= 0.1 and abs(MineSkill - ms) <= 0.1]
        ]
@@ -434,6 +435,14 @@ to fishdynamics
 ]
 end
 
+to update_career
+  ask turtles
+    [ifelse Miningtime > fishingtime
+     [set career 1 ]
+      [set career 0 ]
+  ]
+end
+
 to update_color_and_size
 ask turtles
   [ifelse (Miningtime < Fishingtime)
@@ -446,13 +455,93 @@ ask turtles
   ]
 end
 
-
 to flock
+ ask turtles
+   [find-flockmates
+     if any? flockmates
+    [ find-nearest-neighbor
+      align
+      cohere
+      ifelse distance nearest-neighbor < minimum-separation
+        [ separate  ]
+        [ align
+          cohere  ]
+      ]
+  ]
+end
 
+to find-flockmates
+    let c  [career] of self
+       let same-career other turtles with  [ career = c ]
+      set flockmates same-career in-radius neighborhood_radius
 
 end
 
->>>>>>> 4255fdcebcac90bc04f27cfcb5ed9891cfa5fda0
+to find-nearest-neighbor ;; turtle procedure
+  set nearest-neighbor min-one-of flockmates [distance myself]
+end
+
+;;; SEPARATE
+
+to separate  ;; turtle procedure
+  turn-away ([heading] of nearest-neighbor ) max-separate-turn
+end
+
+;;; ALIGN
+
+to align  ;;turtle procedure
+  turn-towards average-flockmate-heading max-align-turn
+end
+
+to-report average-flockmate-heading  ;; turtle procedure
+  ;; We can't just average the heading variables here.
+  ;; For example, the average of 1 and 359 should be 0,
+  ;; not 180.  So we have to use trigonometry.
+  let x-component sum [dx] of flockmates
+  let y-component sum [dy] of flockmates
+  ifelse x-component = 0 and y-component = 0
+    [ report heading ]
+    [ report atan x-component y-component ]
+end
+
+;;; COHERE
+
+to cohere  ;; turtle procedure
+  turn-towards average-heading-towards-flockmates max-cohere-turn
+end
+
+to-report average-heading-towards-flockmates  ;; turtle procedure
+  ;; "towards myself" gives us the heading from the other turtle
+  ;; to me, but we want the heading from me to the other turtle,
+  ;; so we add 180
+  let x-component mean [sin (towards myself + 180)] of flockmates
+  let y-component mean [cos (towards myself + 180)] of flockmates
+  ifelse x-component = 0 and y-component = 0
+    [ report heading ]
+    [ report atan x-component y-component ]
+end
+
+;;; HELPER PROCEDURES
+
+to turn-towards [new-heading max-turn]  ;; turtle procedure
+  turn-at-most (subtract-headings new-heading heading) max-turn
+end
+
+to turn-away [new-heading max-turn]  ;; turtle procedure
+  turn-at-most (subtract-headings heading new-heading) max-turn
+end
+
+;; turn right by "turn" degrees (or left if "turn" is negative),
+;; but never turn more than "max-turn" degrees
+to turn-at-most [turn max-turn]  ;; turtle procedure
+  ifelse abs turn > max-turn
+    [ ifelse turn > 0
+        [ rt max-turn ]
+        [ lt max-turn ] ]
+    [ rt turn ]
+end
+
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 355
@@ -468,8 +557,8 @@ GRAPHICS-WINDOW
 1
 1
 0
-0
-0
+1
+1
 1
 -50
 50
@@ -482,10 +571,10 @@ ticks
 1.0
 
 BUTTON
-8
-28
-77
-61
+10
+18
+79
+51
 setup
 setup
 NIL
@@ -499,10 +588,10 @@ NIL
 1
 
 BUTTON
-90
-28
-157
-61
+92
+18
+159
+51
 go
 go
 T
@@ -516,10 +605,10 @@ NIL
 0
 
 SLIDER
-6
-65
-123
-98
+8
+55
+125
+88
 num_agents
 num_agents
 0
@@ -549,10 +638,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot Pollution"
 
 BUTTON
-167
-27
-230
-60
+169
+17
+232
+50
 NIL
 go
 NIL
@@ -622,10 +711,10 @@ PENS
 "pen-1" 1.0 0 -7500403 true "" "plot mean [expLNS] of turtles"
 
 SLIDER
-6
-135
-124
-168
+8
+125
+126
+158
 LNSmin
 LNSmin
 0
@@ -637,10 +726,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-6
-168
-124
-201
+8
+158
+126
+191
 Umax
 Umax
 0
@@ -671,10 +760,10 @@ PENS
 "Gold" 1.0 0 -14737633 true "" "plot Gold_Resource"
 
 SLIDER
-147
-285
-319
-318
+149
+275
+321
+308
 removalrate
 removalrate
 0
@@ -725,10 +814,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot avguncertainty"
 
 SWITCH
-135
-65
-300
-98
+137
+55
+302
+88
 variability_skills
 variability_skills
 0
@@ -736,10 +825,10 @@ variability_skills
 -1000
 
 SLIDER
-5
-100
-124
-133
+7
+90
+126
+123
 gamma
 gamma
 0
@@ -769,10 +858,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [Income] of turtles"
 
 SWITCH
-3
-207
-128
-240
+5
+197
+130
+230
 Pollution_active
 Pollution_active
 0
@@ -780,10 +869,10 @@ Pollution_active
 -1000
 
 SWITCH
-5
-288
-131
-321
+7
+278
+133
+311
 Stochasticity
 Stochasticity
 0
@@ -809,10 +898,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot Gini"
 
 SLIDER
-133
-100
-322
-133
+135
+90
+324
+123
 level_of_variability_skills
 level_of_variability_skills
 0
@@ -824,10 +913,10 @@ NIL
 HORIZONTAL
 
 SWITCH
-132
-136
-305
-169
+134
+126
+307
+159
 variability_thresholds
 variability_thresholds
 0
@@ -835,10 +924,10 @@ variability_thresholds
 -1000
 
 SLIDER
-132
-169
-329
-202
+134
+159
+331
+192
 level_of_variability_thresholds
 level_of_variability_thresholds
 0
@@ -850,21 +939,21 @@ NIL
 HORIZONTAL
 
 SWITCH
-5
-251
-144
-284
+7
+241
+146
+274
 inequalityaversion
 inequalityaversion
-0
+1
 1
 -1000
 
 SLIDER
-174
-366
-330
-399
+176
+356
+332
+389
 beta
 beta
 0
@@ -876,60 +965,60 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-250
-20
-400
-62
+252
+10
+402
+52
 If variability thresholds is on, LNSmin and Umax sliders cannot be used.
 11
 0.0
 1
 
 TEXTBOX
-169
-331
-319
-359
+171
+321
+321
+349
 Is there variability of fish catch among agents/
 11
 0.0
 1
 
 SLIDER
-18
-327
-153
-360
-Steps
-Steps
+20
+317
+155
+350
+Speed
+Speed
 0
 10
-1.0
+2.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-18
-364
-152
-397
-Vicinity_distance
-Vicinity_distance
+20
+354
+154
+387
+Neighborhood_radius
+Neighborhood_radius
 0
 10
-1.0
+10.0
 1
 1
 NIL
 HORIZONTAL
 
 SWITCH
-138
-206
-307
-239
+140
+196
+309
+229
 variability_gamma
 variability_gamma
 1
@@ -937,10 +1026,10 @@ variability_gamma
 -1000
 
 SLIDER
-154
-249
-377
-282
+156
+239
+379
+272
 level_of_variability_gamma
 level_of_variability_gamma
 0
@@ -950,6 +1039,77 @@ level_of_variability_gamma
 1
 NIL
 HORIZONTAL
+
+SLIDER
+5
+407
+177
+440
+minimum-separation
+minimum-separation
+0
+5
+1.0
+0.25
+1
+NIL
+HORIZONTAL
+
+SLIDER
+4
+474
+176
+507
+max-align-turn
+max-align-turn
+0
+20
+6.0
+0.25
+1
+NIL
+HORIZONTAL
+
+SLIDER
+5
+442
+177
+475
+max-separate-turn
+max-separate-turn
+0
+20
+1.5
+0.25
+1
+NIL
+HORIZONTAL
+
+SLIDER
+4
+507
+176
+540
+max-cohere-turn
+max-cohere-turn
+0
+20
+5.75
+0.25
+1
+NIL
+HORIZONTAL
+
+SWITCH
+191
+410
+294
+443
+flocking
+flocking
+0
+1
+-1000
 
 @#$#@#$#@
 This is a Netlogo implementation of a simplified version of the model described in Jager W., M.A. Janssen, H.J.M. De Vries, J. De Greef and C.A.J. Vlek (2000) Behaviour in commons dilemmas: Homo Economicus and Homo Psychologicus in an ecological-economic model, Ecological Economics 35(3): 357-380
