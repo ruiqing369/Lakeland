@@ -1623,7 +1623,7 @@ repeat 75 [ go ]
       <value value="0"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="baseline" repetitions="50" runMetricsEveryStep="true">
+  <experiment name="baseline_test" repetitions="10" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="500"/>
@@ -1674,7 +1674,7 @@ repeat 75 [ go ]
     <metric>agt8inc</metric>
     <metric>agt9inc</metric>
     <enumeratedValueSet variable="variability_skills">
-      <value value="false"/>
+      <value value="true"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="variability_thresholds">
       <value value="false"/>
@@ -1695,12 +1695,10 @@ repeat 75 [ go ]
       <value value="0.2"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="gamma">
-      <value value="0.25"/>
       <value value="0.5"/>
-      <value value="0.75"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="level_of_variability_skills">
-      <value value="0"/>
+      <value value="0.5"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="level_of_variability_thresholds">
       <value value="0"/>
@@ -1720,8 +1718,20 @@ repeat 75 [ go ]
     <enumeratedValueSet variable="steps">
       <value value="0"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="vicinity_distance">
-      <value value="0"/>
+    <enumeratedValueSet variable="neighborhood_radius">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="minimum-separation">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-separate-turn">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-align-turn">
+      <value value="6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-cohere-turn">
+      <value value="5.75"/>
     </enumeratedValueSet>
   </experiment>
   <experiment name="radius" repetitions="50" runMetricsEveryStep="true">
